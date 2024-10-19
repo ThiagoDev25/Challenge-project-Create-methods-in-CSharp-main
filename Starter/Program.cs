@@ -24,11 +24,23 @@ string player = states[0];
 // Índice da comida atual
 int food = 0;
 
+
+
 InitializeGame();
-while (!shouldExit) 
-{
-    Move();
-}
+ while (!shouldExit) 
+ {
+    if (TerminalResized())
+        {
+        Console.Clear();
+        Console.WriteLine("O Console foi redimensionado. Saindo do Programa! ");
+        Environment.Exit(0);
+        }
+    else 
+    {
+   Move();
+    }
+ }
+
 
 // Retorna true se o terminal foi redimensionado
 bool TerminalResized() 
@@ -67,7 +79,7 @@ void FreezePlayer()
 }
 
 // Lê a entrada direcional do console e move o jogador
-void Move() 
+void Move(int speed = 1, bool otherKeysExit = false) 
 {
     int lastX = playerX;
     int lastY = playerY;
@@ -88,6 +100,9 @@ void Move()
             break;
         case ConsoleKey.Escape:     
             shouldExit = true; 
+            break;
+        default: 
+            shouldExit = otherKeysExit;
             break;
     }
 
