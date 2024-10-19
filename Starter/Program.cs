@@ -6,22 +6,22 @@ int height = Console.WindowHeight - 1;
 int width = Console.WindowWidth - 5;
 bool shouldExit = false;
 
-// Console position of the player
+// Posição do jogador no console
 int playerX = 0;
 int playerY = 0;
 
-// Console position of the food
+// Posição da comida no console
 int foodX = 0;
 int foodY = 0;
 
-// Available player and food strings
+// Strings disponíveis para o jogador e a comida
 string[] states = {"('-')", "(^-^)", "(X_X)"};
 string[] foods = {"@@@@@", "$$$$$", "#####"};
 
-// Current player string displayed in the Console
+// String atual do jogador exibida no console
 string player = states[0];
 
-// Index of the current food
+// Índice da comida atual
 int food = 0;
 
 InitializeGame();
@@ -30,28 +30,28 @@ while (!shouldExit)
     Move();
 }
 
-// Returns true if the Terminal was resized 
+// Retorna true se o terminal foi redimensionado
 bool TerminalResized() 
 {
     return height != Console.WindowHeight - 1 || width != Console.WindowWidth - 5;
 }
 
-// Displays random food at a random location
+// Exibe comida aleatória em uma localização aleatória
 void ShowFood() 
 {
-    // Update food to a random index
+    // Atualiza a comida para um índice aleatório
     food = random.Next(0, foods.Length);
 
-    // Update food position to a random location
+    // Atualiza a posição da comida para uma localização aleatória
     foodX = random.Next(0, width - player.Length);
     foodY = random.Next(0, height - 1);
 
-    // Display the food at the location
+    // Exibe a comida na localização
     Console.SetCursorPosition(foodX, foodY);
     Console.Write(foods[food]);
 }
 
-// Changes the player to match the food consumed
+// Altera o jogador para corresponder à comida consumida
 void ChangePlayer() 
 {
     player = states[food];
@@ -59,14 +59,14 @@ void ChangePlayer()
     Console.Write(player);
 }
 
-// Temporarily stops the player from moving
+// Temporariamente impede o jogador de se mover
 void FreezePlayer() 
 {
     System.Threading.Thread.Sleep(1000);
     player = states[0];
 }
 
-// Reads directional input from the Console and moves the player
+// Lê a entrada direcional do console e move o jogador
 void Move() 
 {
     int lastX = playerX;
@@ -77,37 +77,37 @@ void Move()
         case ConsoleKey.UpArrow:
             playerY--; 
             break;
-		case ConsoleKey.DownArrow: 
+        case ConsoleKey.DownArrow: 
             playerY++; 
             break;
-		case ConsoleKey.LeftArrow:  
+        case ConsoleKey.LeftArrow:  
             playerX--; 
             break;
-		case ConsoleKey.RightArrow: 
+        case ConsoleKey.RightArrow: 
             playerX++; 
             break;
-		case ConsoleKey.Escape:     
+        case ConsoleKey.Escape:     
             shouldExit = true; 
             break;
     }
 
-    // Clear the characters at the previous position
+    // Limpa os caracteres na posição anterior
     Console.SetCursorPosition(lastX, lastY);
     for (int i = 0; i < player.Length; i++) 
     {
         Console.Write(" ");
     }
 
-    // Keep player position within the bounds of the Terminal window
+    // Mantém a posição do jogador dentro dos limites da janela do terminal
     playerX = (playerX < 0) ? 0 : (playerX >= width ? width : playerX);
     playerY = (playerY < 0) ? 0 : (playerY >= height ? height : playerY);
 
-    // Draw the player at the new location
+    // Desenha o jogador na nova localização
     Console.SetCursorPosition(playerX, playerY);
     Console.Write(player);
 }
 
-// Clears the console, displays the food and player
+// Limpa o console, exibe a comida e o jogador
 void InitializeGame() 
 {
     Console.Clear();
