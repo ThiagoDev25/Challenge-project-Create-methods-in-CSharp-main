@@ -37,7 +37,25 @@ InitializeGame();
         }
     else 
     {
-   Move();
+        if (PlayerFeliz())
+        {
+            Move(2, false);
+        }
+        else if (PlayerDoente())
+        {
+            FreezePlayer();
+        }
+        else 
+        {
+            Move(otherKeysExit: false);
+            
+        }
+    
+    if (Comeu())
+    {
+        ChangePlayer();
+        ShowFood();
+    }
     }
  }
 
@@ -93,10 +111,10 @@ void Move(int speed = 1, bool otherKeysExit = false)
             playerY++; 
             break;
         case ConsoleKey.LeftArrow:  
-            playerX--; 
+            playerX -= speed; 
             break;
         case ConsoleKey.RightArrow: 
-            playerX++; 
+            playerX += speed; 
             break;
         case ConsoleKey.Escape:     
             shouldExit = true; 
@@ -129,4 +147,20 @@ void InitializeGame()
     ShowFood();
     Console.SetCursorPosition(0, 0);
     Console.Write(player);
+}
+
+/*Método comeu*/
+bool Comeu()
+{
+    return playerX == foodX && playerY == foodY;
+}
+
+bool PlayerFeliz()
+{
+    return player.Equals(states[1]);
+}
+
+bool PlayerDoente()
+{
+    return player.Equals(states[2]);
 }
